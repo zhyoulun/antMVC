@@ -10,6 +10,6 @@
 
 
 ```
-composer install antmvc/antmvc
+composer require antmvc/antmvc
 ```
 
