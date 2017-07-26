@@ -1,5 +1,5 @@
 {
-  "name": "antMVC/antMVC",
+  "name": "antmvc/antmvc",
   "description": "a small but powerful mvc framework by php",
   "require": {
     "php": ">=5.3.0"
