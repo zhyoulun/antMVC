@@ -1,20 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangyoulun-bt
- * Date: 2017/7/26
- * Time: 19:00
- */
 
 namespace ant\core;
-
 
 class Ant
 {
     public function run()
     {
-        //catch fatal error
-        register_shutdown_function(array($this, 'shutdown_function'));
+        register_shutdown_function(array($this, 'catch_fatal_error'));
 
         try{
             new A();
@@ -26,7 +18,10 @@ class Ant
         }
     }
 
-    private function shutdown_function()
+    /**
+     * catch fatal error
+     */
+    private function catch_fatal_error()
     {
         $e = error_get_last();
         echo "<pre>";
@@ -34,9 +29,15 @@ class Ant
         echo "</pre>";
     }
 
+    /**
+     * auto load
+     *
+     * @param $className
+     * @throws Exception
+     */
     public static function autoload($className)
     {
-        $file = substr($className, 4);//remove 'ant\' head
+        $file = substr($className, 4);//remove "ant\" head
         $file = str_replace('\\', '/', ANT_PATH."/{$file}.php");
         if(is_file($file))
             include($file);
