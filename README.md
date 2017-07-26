@@ -2,7 +2,14 @@
 
 > a small but powerful mvc framework by php
 
-## requirements
+## Requirements
 
-- PHP >= 5.3.0
+- PHP >= 5.3.2
+
+## Installation
+
+
+```
+composer install antmvc/antmvc
+```
 
