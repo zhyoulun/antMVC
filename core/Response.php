@@ -95,7 +95,7 @@ class Response
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
-        $this->statusText = isset(self::$httpStatuses[$this->statusCode])?self::$httpStatuses[$this->statusCode]:'Common Error';
+        $this->statusText = isset(self::$httpStatuses[$this->statusCode]) ? self::$httpStatuses[$this->statusCode] : 'Common Error';
     }
 
     public function setStatusText($statusText)

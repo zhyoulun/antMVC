@@ -2,7 +2,6 @@
 
 namespace ant\controllers;
 
-
 use ant\core\BaseController;
 
 class IndexController extends BaseController
