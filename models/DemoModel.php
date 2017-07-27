@@ -1,14 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangyoulun-bt
- * Date: 2017/7/26
- * Time: 18:57
- */
 
 namespace ant\models;
 
+use ant\core\Exception;
+
 class DemoModel
 {
-
+    public function __construct()
+    {
+        throw new Exception('hello world');
+    }
 }

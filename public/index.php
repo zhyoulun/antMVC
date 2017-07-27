@@ -1,7 +1,8 @@
 <?php
 define('ANT_PATH', dirname(__DIR__));
 
-define('ANT_DEBUG', false);
+//debug mode switch
+define('ANT_DEBUG', true);
 
 require ANT_PATH.'/vendor/autoload.php';
 require ANT_PATH.'/core/init.php';
