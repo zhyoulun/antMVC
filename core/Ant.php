@@ -8,6 +8,14 @@ class Ant
     private $controller;
     private $action;
 
+    //ini file absolute path
+    private $iniFile;
+
+    public function __construct($iniFile)
+    {
+        $this->iniFile = $iniFile;
+    }
+
     /**
      * run, run, run
      */
@@ -23,12 +31,55 @@ class Ant
                 $controllerClassString = "ant\\modules\\{$this->module}\\controllers\\{$this->controller}Controller";
             }
 
+            $this->initConfig();
+
             $controllerClass = new $controllerClassString();
             $action = $this->action . "Action";
             $controllerClass->$action();
         } catch (Exception $e) {
             $this->renderError($e);
+        } catch (ErrorException $e){
+            $this->renderError($e);
         }
+    }
+
+    /**
+     * init application ini file
+     *
+     * @throws ErrorException
+     */
+    private function initConfig()
+    {
+        $configArray = parse_ini_file($this->iniFile, true);
+        if(!is_array($configArray)){
+            throw new ErrorException('parse ini file error');
+        }
+
+        if(!isset($configArray['common'])){
+            throw new ErrorException('common section is required');
+        }
+
+        $env = isset($_SERVER['ANT_ENV'])?$_SERVER['ANT_ENV']:'product';
+        $subSection = '';
+        foreach ($configArray as $session=>$valueArray){
+            if($session==='common'){
+                continue;
+            }
+            if(strpos($session, ':')!==false){
+                $strings = explode(':', $session);
+                if(count($strings)==2){
+                    if(trim($strings[0])===$env && trim($strings[1])==='common'){
+                        $subSection = $session;
+                        break;
+                    }
+                }
+            }
+        }
+        if($subSection===''){
+            throw new ErrorException('section not found: '.$env);
+        }
+
+        Registry::set('config', array_merge($configArray['common'], $configArray[$subSection]));
     }
 
     /**
@@ -107,22 +158,5 @@ class Ant
 
         $response->content = $content;
         $response->send();
-    }
-
-    /**
-     * auto load
-     *
-     * @param $className
-     * @throws Exception
-     */
-    public static function autoload($className)
-    {
-        $file = substr($className, 4);//remove "ant\" head
-        $file = str_replace('\\', '/', ANT_PATH . "/{$file}.php");
-        if (is_file($file)) {
-            include($file);
-        } elseif (ANT_DEBUG) {
-            throw new Exception("class {$className} not found, file: " . $file);
-        }
     }
 }

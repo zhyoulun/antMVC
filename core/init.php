@@ -1,6 +1,6 @@
 <?php
-require ANT_PATH.'/core/Ant.php';
+require ANT_PATH.'/core/AutoLoad.php';
 
-use ant\core\Ant;
+use ant\core\AutoLoad;
 
-spl_autoload_register(array(new Ant(),'autoload'));
+spl_autoload_register(array(new AutoLoad(),'autoload'));
