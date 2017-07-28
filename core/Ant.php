@@ -89,9 +89,12 @@ class Ant
      */
     private function getRequest()
     {
-        $this->module = (isset($_GET['module']) && strlen($_GET['module']) > 0) ? strtolower($_GET['module']) : 'index';
-        $this->controller = (isset($_GET['controller']) && strlen($_GET['controller']) > 0) ? strtolower($_GET['controller']) : 'index';
-        $this->action = (isset($_GET['action']) && strlen($_GET['action']) > 0) ? strtolower($_GET['action']) : 'index';
+        $this->module = (isset($_GET['module']) && strlen($_GET['module']) > 0) ?
+            str_replace(' ', '-', ucwords(str_replace('-', ' ', $_GET['module']))) : 'Index';
+        $this->controller = (isset($_GET['controller']) && strlen($_GET['controller']) > 0) ?
+            str_replace(' ', '-', ucwords(str_replace('-', ' ', $_GET['controller']))) : 'Index';
+        $this->action = (isset($_GET['action']) && strlen($_GET['action']) > 0) ?
+            strtolower($_GET['action']) : 'index';
 
         if (1 !== preg_match("/^[a-z0-9]+$/i", $this->module . $this->controller . $this->action))
             throw new HttpException(404);
