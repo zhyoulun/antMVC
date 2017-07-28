@@ -25,7 +25,7 @@ class Ant
 
         try {
             $this->getRequest();
-            if ($this->module === 'index') {
+            if ($this->module === 'Index') {
                 $controllerClassString = "ant\\controllers\\{$this->controller}Controller";
             } else {
                 $controllerClassString = "ant\\modules\\{$this->module}\\controllers\\{$this->controller}Controller";
@@ -96,7 +96,7 @@ class Ant
         $this->action = (isset($_GET['action']) && strlen($_GET['action']) > 0) ?
             strtolower($_GET['action']) : 'index';
 
-        if (1 !== preg_match("/^[a-z0-9]+$/i", $this->module . $this->controller . $this->action))
+        if (1 !== preg_match("/^[-a-z0-9]+$/i", $this->module . $this->controller . $this->action))
             throw new HttpException(404);
     }
 
