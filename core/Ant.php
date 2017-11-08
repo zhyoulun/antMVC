@@ -10,10 +10,12 @@ class Ant
 
     //ini file absolute path
     private $iniFile;
+    private $env;
 
-    public function __construct($iniFile)
+    public function __construct($iniFile, $env='product')
     {
         $this->iniFile = $iniFile;
+        $this->env = $env;
     }
 
     /**
@@ -59,7 +61,6 @@ class Ant
             throw new ErrorException('common section is required');
         }
 
-        $env = isset($_SERVER['ANT_ENV'])?$_SERVER['ANT_ENV']:'product';
         $subSection = '';
         foreach ($configArray as $session=>$valueArray){
             if($session==='common'){
@@ -68,7 +69,7 @@ class Ant
             if(strpos($session, ':')!==false){
                 $strings = explode(':', $session);
                 if(count($strings)==2){
-                    if(trim($strings[0])===$env && trim($strings[1])==='common'){
+                    if(trim($strings[0])===$this->env && trim($strings[1])==='common'){
                         $subSection = $session;
                         break;
                     }
@@ -76,7 +77,7 @@ class Ant
             }
         }
         if($subSection===''){
-            throw new ErrorException('section not found: '.$env);
+            throw new ErrorException('section not found: '.$this->env);
         }
 
         Registry::set('config', array_merge($configArray['common'], $configArray[$subSection]));
